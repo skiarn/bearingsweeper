@@ -1,0 +1,30 @@
+tools:
+  bearingsweeper:
+    info: "Base module for other modules in this file to build on."
+    inputs:
+      restart-policy:
+        info: Restart policy for the container.
+        type: [default, [enum, always, on-failure], always]
+    run:
+      - tool: polytope/node
+        args:
+          await: false
+          id: bearingsweeper
+          image: oven/bun:alpine
+          create: when-missing
+          code: { type: repo, path: . }
+          cmd: ./bin/run
+          restart:
+            policy: pt.input restart-policy
+          services:
+            - id: bearingsweeper
+              ports:
+                - { protocol: http, port: pt.value bearingsweeper-port, expose-as: pt.value bearingsweeper-port }
+          env:
+            - { name: PORT, value: pt.value bearingsweeper-port }
+            - { name: LOG_LEVEL, value: pt.value bearingsweeper-log-level }
+          mounts:
+            - { path: /root/.cache/, source: { type: volume, scope: project, id: bearingsweeper-home-cache }}
+            - { path: /root/.bun/, source: { type: volume, scope: project, id: bearingsweeper-bun-cache }}
+            - { path: /app/node_modules/, source: { type: volume, scope: project, id: bearingsweeper-node-modules }}
+            - { path: /app/clients, source: { type: repo, path: /clients/typescript }}
