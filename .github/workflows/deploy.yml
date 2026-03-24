@@ -29,11 +29,9 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        working-directory: services/bearingsweeper
         run: npm ci
 
       - name: Build
-        working-directory: services/bearingsweeper
         run: npm run build
 
       - name: Upload artifact
