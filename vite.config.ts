@@ -4,8 +4,8 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 
-export default defineConfig(({ command }) => ({
-  base: command === "build" ? "/bearingsweeper/" : "/",
+export default defineConfig({
+  base: "/bearingsweeper/",
   clearScreen: false,
   server: {
     allowedHosts: true,
@@ -21,4 +21,4 @@ export default defineConfig(({ command }) => ({
     },
   },
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
-}));
+});
